@@ -40,9 +40,8 @@ function ExternalIcon() {
   )
 }
 
-const encodedAddress = encodeURIComponent('NO 18 JALAN DESA KEMANDOL 11, TAMAN DESA KEMANDOL, 42610 JENJAROM SELANGOR')
-const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodedAddress}`
-const wazeUrl = `https://www.waze.com/ul?q=${encodedAddress}`
+const googleMapsUrl = 'https://maps.app.goo.gl/aKeeRF9gi1izqKE8A?g_st=iw'
+const wazeUrl = 'https://waze.com/ul/hw280xnyd2'
 
 const namaPenuh = [
   'MUHAMMAD FAIS BIN MOHD FADZIL',
