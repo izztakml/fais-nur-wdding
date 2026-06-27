@@ -44,8 +44,8 @@ const googleMapsUrl = 'https://maps.app.goo.gl/aKeeRF9gi1izqKE8A?g_st=iw'
 const wazeUrl = 'https://waze.com/ul/hw280xnyd2'
 
 const namaPenuh = [
-  'MUHAMMAD FAIS BIN MOHD FADZIL',
   'NUR MARIANA BINTI MD JADI',
+  'MUHAMMAD FAIS BIN MOHD FADZIL',
 ]
 
 const ibuBapa = [
