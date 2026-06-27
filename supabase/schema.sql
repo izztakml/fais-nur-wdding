@@ -23,5 +23,11 @@ CREATE POLICY "Authenticated users can view RSVPs" ON rsvps
   TO authenticated
   USING (true);
 
+-- Allow public to view RSVP messages (for marquee display)
+CREATE POLICY "Public can view RSVP messages" ON rsvps
+  FOR SELECT
+  TO anon
+  USING (true);
+
 -- Create index for sorting by creation date
 CREATE INDEX idx_rsvps_created_at ON rsvps(created_at DESC);

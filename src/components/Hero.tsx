@@ -2,6 +2,12 @@
 
 import { useState, useEffect } from 'react'
 
+type Message = {
+  id: string
+  name: string
+  message: string
+}
+
 const sections = [
   { id: 'details', label: 'Details' },
   { id: 'card', label: 'Kad' },
@@ -22,6 +28,8 @@ const stagger = [
 export default function Hero() {
   const [scrolled, setScrolled] = useState(false)
   const [mounted, setMounted] = useState(false)
+  const [messages, setMessages] = useState<Message[]>([])
+  const [selected, setSelected] = useState<Message | null>(null)
 
   useEffect(() => {
     setMounted(true)
@@ -30,9 +38,45 @@ export default function Hero() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
+  useEffect(() => {
+    const fetchMessages = async () => {
+      try {
+        const res = await fetch('/api/messages')
+        if (res.ok) {
+          const data = await res.json()
+          setMessages(data)
+        }
+      } catch (e) { console.error('marquee fetch error', e) }
+    }
+    fetchMessages()
+  }, [])
+
+  const hasMarquee = messages.length > 0
+
   return (
     <>
-      <nav className={`fixed top-0 left-0 right-0 z-40 transition-all duration-500 ${scrolled ? 'bg-[#4d0b16]/95 backdrop-blur-sm py-3 shadow-lg' : 'bg-transparent py-5'}`}>
+      <div className="fixed top-0 left-0 right-0 z-50 bg-[#791123]/90 backdrop-blur-sm border-b border-[#c9a06c]/20 overflow-hidden h-10">
+        {hasMarquee ? (
+          <div className="flex items-center h-full whitespace-nowrap animate-marquee hover:[animation-play-state:paused]">
+            {[...messages.slice(0, 3), ...messages.slice(0, 3)].map((msg, i) => (
+              <button
+                key={`${msg.id}-${i}`}
+                onClick={() => setSelected(msg)}
+                className="inline-flex items-center gap-2 mx-6 text-[#f5e6d0] text-xs tracking-wide hover:text-[#c9a06c] transition-colors cursor-pointer shrink-0"
+              >
+                <span className="w-1 h-1 rounded-full bg-[#c9a06c] shrink-0" />
+                <span className="max-w-[180px] truncate">{msg.message}</span>
+              </button>
+            ))}
+          </div>
+        ) : (
+          <div className="flex items-center justify-center h-full">
+            <span className="text-[#f5e6d0] text-xs italic opacity-60">Loading ucapan...</span>
+          </div>
+        )}
+      </div>
+
+      <nav className={`fixed ${hasMarquee ? 'top-10' : 'top-0'} left-0 right-0 z-40 transition-all duration-500 ${scrolled ? 'bg-[#4d0b16]/95 backdrop-blur-sm py-3 shadow-lg' : 'bg-transparent py-5'}`}>
         <div className="max-w-3xl mx-auto px-6 flex items-center justify-center gap-6 md:gap-10">
           {sections.map((s) => (
             <a
@@ -167,6 +211,41 @@ export default function Hero() {
           </div>
         </div>
       </section>
+
+      {selected && (
+        <div
+          className="fixed inset-0 z-[60] modal-overlay flex items-center justify-center p-4 animate-fade-in"
+          onClick={() => setSelected(null)}
+        >
+          <div
+            className="relative w-full max-w-md bg-gradient-to-br from-[#f5f0e8] to-[#faf7f2] rounded-2xl p-8 shadow-2xl border border-[#c9a06c]/30 animate-fade-in-up"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              onClick={() => setSelected(null)}
+              className="absolute top-4 right-4 text-[#9a7b7b] hover:text-[#791123] text-3xl leading-none transition-colors"
+            >
+              &times;
+            </button>
+
+            <div className="text-center">
+              <p className="text-[#c9a06c] text-xs tracking-[0.2em] uppercase font-[family-name:var(--font-lato)]">
+                Ucapan
+              </p>
+              <div className="w-8 h-px bg-gradient-to-r from-transparent via-[#c9a06c] to-transparent mx-auto my-4" />
+
+              <p className="text-[#2d2a24] font-[family-name:var(--font-playfair)] text-lg leading-relaxed mb-8 italic px-2">
+                &ldquo;{selected.message}&rdquo;
+              </p>
+
+              <div className="border-t border-[#c9a06c]/20 pt-4">
+                <p className="text-[#9a7b7b] text-xs tracking-[0.15em] uppercase">by</p>
+                <p className="text-[#791123] font-semibold text-base mt-1">{selected.name}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   )
 }
