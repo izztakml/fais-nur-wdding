@@ -6,7 +6,8 @@ export async function GET() {
     .from('rsvps')
     .select('id, name, message')
     .neq('message', '')
-    .order('id', { ascending: true })
+    .order('id', { ascending: false })
+    .limit(20)
 
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 })

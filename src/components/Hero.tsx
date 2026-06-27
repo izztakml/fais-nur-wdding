@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 
 type Message = {
   id: string
@@ -25,50 +25,11 @@ const stagger = [
   { delay: '3.9s' },
 ]
 
-function MarqueeScroll({ messages, paused, onSelect }: { messages: Message[], paused: boolean, onSelect: (msg: Message) => void }) {
-  const ref = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    const el = ref.current
-    if (!el || messages.length === 0) return
-    let animationId: number
-    let pos = 0
-    const speed = 0.5
-
-    const tick = () => {
-      if (!paused) pos -= speed
-      const half = el.scrollWidth / 2
-      if (pos <= -half) pos = 0
-      el.style.transform = `translateX(${pos}px)`
-      animationId = requestAnimationFrame(tick)
-    }
-
-    animationId = requestAnimationFrame(tick)
-    return () => cancelAnimationFrame(animationId)
-  }, [messages, paused])
-
-  return (
-    <div ref={ref} className="flex items-center h-full whitespace-nowrap">
-      {[...messages, ...messages].map((msg, i) => (
-        <button
-          key={`${msg.id}-${i}`}
-          onClick={() => onSelect(msg)}
-          className="inline-flex items-center gap-2 mx-6 text-[#f5e6d0] text-xs tracking-wide hover:text-[#c9a06c] transition-colors cursor-pointer shrink-0"
-        >
-          <span className="w-1 h-1 rounded-full bg-[#c9a06c] shrink-0" />
-          <span className="max-w-[180px] truncate select-none">{msg.message}</span>
-        </button>
-      ))}
-    </div>
-  )
-}
-
 export default function Hero() {
   const [scrolled, setScrolled] = useState(false)
   const [mounted, setMounted] = useState(false)
   const [messages, setMessages] = useState<Message[]>([])
   const [selected, setSelected] = useState<Message | null>(null)
-  const [paused, setPaused] = useState(false)
 
   useEffect(() => {
     setMounted(true)
@@ -94,18 +55,19 @@ export default function Hero() {
 
   return (
     <>
-      <div
-        className="fixed top-0 left-0 right-0 z-50 bg-[#791123]/90 backdrop-blur-sm border-b border-[#c9a06c]/20 overflow-hidden h-10"
-        onMouseEnter={() => setPaused(true)}
-        onMouseLeave={() => setPaused(false)}
-      >
-        {hasMarquee ? (
-          <MarqueeScroll messages={messages.slice(0, 3)} paused={paused} onSelect={setSelected} />
-        ) : (
-          <div className="flex items-center justify-center h-full">
-            <span className="text-[#f5e6d0] text-xs italic opacity-60">Loading ucapan...</span>
-          </div>
-        )}
+      <div className="fixed top-0 left-0 right-0 z-50 bg-[#791123]/90 backdrop-blur-sm border-b border-[#c9a06c]/20 overflow-hidden h-10">
+        <div className="flex items-center h-full whitespace-nowrap animate-marquee hover:[animation-play-state:paused]">
+          {[...messages, ...messages].map((msg, i) => (
+            <button
+              key={`${msg.id}-${i}`}
+              onClick={() => setSelected(msg)}
+              className="inline-flex items-center gap-2 mx-6 text-[#f5e6d0] text-xs tracking-wide hover:text-[#c9a06c] transition-colors cursor-pointer shrink-0"
+            >
+              <span className="w-1 h-1 rounded-full bg-[#c9a06c] shrink-0" />
+              <span className="max-w-[220px] truncate">{msg.message}</span>
+            </button>
+          ))}
+        </div>
       </div>
 
       <nav className={`fixed ${hasMarquee ? 'top-10' : 'top-0'} left-0 right-0 z-40 transition-all duration-500 ${scrolled ? 'bg-[#4d0b16]/95 backdrop-blur-sm py-3 shadow-lg' : 'bg-transparent py-5'}`}>
