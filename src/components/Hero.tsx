@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 
 type Message = {
   id: string
@@ -24,6 +24,56 @@ const stagger = [
   { delay: '3.4s' },
   { delay: '3.9s' },
 ]
+
+function MarqueeTrack({ messages, onSelect }: { messages: Message[], onSelect: (m: Message) => void }) {
+  const ref = useRef<HTMLDivElement>(null)
+  const paused = useRef(false)
+
+  useEffect(() => {
+    const el = ref.current
+    if (!el || messages.length === 0) return
+    let pos = 0
+    let id: number
+
+    const speed = () => window.innerWidth < 1024 ? 1.2 : 0.8
+
+    const tick = () => {
+      if (!paused.current) {
+        pos -= speed()
+        if (pos <= -el.scrollWidth / 2) pos = 0
+        el.style.transform = `translateX(${pos}px)`
+      }
+      id = requestAnimationFrame(tick)
+    }
+    id = requestAnimationFrame(tick)
+
+    const onEnter = () => { paused.current = true }
+    const onLeave = () => { paused.current = false }
+    el.parentElement!.addEventListener('mouseenter', onEnter)
+    el.parentElement!.addEventListener('mouseleave', onLeave)
+
+    return () => {
+      cancelAnimationFrame(id)
+      el.parentElement?.removeEventListener('mouseenter', onEnter)
+      el.parentElement?.removeEventListener('mouseleave', onLeave)
+    }
+  }, [messages])
+
+  return (
+    <div ref={ref} className="flex items-center h-full whitespace-nowrap">
+      {[...messages, ...messages].map((msg, i) => (
+        <button
+          key={`${msg.id}-${i}`}
+          onClick={() => onSelect(msg)}
+          className="inline-flex items-center gap-2 mx-5 text-[#f5e6d0] text-xs tracking-wide hover:text-[#c9a06c] transition-colors cursor-pointer shrink-0"
+        >
+          <span className="w-1 h-1 rounded-full bg-[#c9a06c] shrink-0" />
+          <span className="max-w-[200px] truncate">{msg.message}</span>
+        </button>
+      ))}
+    </div>
+  )
+}
 
 export default function Hero() {
   const [scrolled, setScrolled] = useState(false)
@@ -56,18 +106,7 @@ export default function Hero() {
   return (
     <>
       <div className="fixed top-0 left-0 right-0 z-50 bg-[#791123]/90 backdrop-blur-sm border-b border-[#c9a06c]/20 overflow-hidden h-10">
-        <div className="flex items-center h-full whitespace-nowrap animate-marquee hover:[animation-play-state:paused]">
-          {[...messages, ...messages].map((msg, i) => (
-            <button
-              key={`${msg.id}-${i}`}
-              onClick={() => setSelected(msg)}
-              className="inline-flex items-center gap-2 mx-6 text-[#f5e6d0] text-xs tracking-wide hover:text-[#c9a06c] transition-colors cursor-pointer shrink-0"
-            >
-              <span className="w-1 h-1 rounded-full bg-[#c9a06c] shrink-0" />
-              <span className="max-w-[220px] truncate">{msg.message}</span>
-            </button>
-          ))}
-        </div>
+        <MarqueeTrack messages={messages} onSelect={setSelected} />
       </div>
 
       <nav className={`fixed ${hasMarquee ? 'top-10' : 'top-0'} left-0 right-0 z-40 transition-all duration-500 ${scrolled ? 'bg-[#4d0b16]/95 backdrop-blur-sm py-3 shadow-lg' : 'bg-transparent py-5'}`}>
