@@ -101,15 +101,15 @@ export default function DetailsSection() {
                 <div className="h-px w-12 bg-gradient-to-r from-[#c9a06c] to-transparent" />
               </div>
               <h3 className="font-[family-name:var(--font-dancing)] text-5xl md:text-7xl text-[#4d0b16] leading-tight">
-                Fais
+                Nur
               </h3>
               <p className="font-[family-name:var(--font-playfair)] text-lg text-[#791123] italic my-2">&amp;</p>
               <h3 className="font-[family-name:var(--font-dancing)] text-5xl md:text-7xl text-[#4d0b16] leading-tight">
-                Nur
+                Fais
               </h3>
               <div className="flex items-center justify-center gap-4 mt-3">
                 <div className="h-px w-12 bg-gradient-to-r from-transparent to-[#c9a06c]" />
-                <span className="text-[#c9a06c] text-xs font-[family-name:var(--font-playfair)] italic">Putera & Puteri</span>
+                <span className="text-[#c9a06c] text-xs font-[family-name:var(--font-playfair)] italic">Puteri & Putera</span>
                 <div className="h-px w-12 bg-gradient-to-r from-[#c9a06c] to-transparent" />
               </div>
             </div>

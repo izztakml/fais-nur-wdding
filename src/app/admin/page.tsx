@@ -53,7 +53,7 @@ export default function AdminLogin() {
       <div className="bg-white rounded-2xl shadow-lg p-8 max-w-sm w-full border border-[#e8ddd0]">
         <div className="text-center mb-6">
           <p className="font-[family-name:var(--font-dancing)] text-3xl text-[#4d0b16] mb-1">
-            Fais <span className="text-[#791123]">&amp;</span> Nur
+            Nur <span className="text-[#791123]">&amp;</span> Fais
           </p>
           <div className="w-8 h-px bg-[#c9a06c] mx-auto my-3" />
           <p className="text-[#9a7b7b] text-xs">Admin Login</p>

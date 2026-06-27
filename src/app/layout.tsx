@@ -21,8 +21,8 @@ const lato = Lato({
 });
 
 export const metadata: Metadata = {
-  title: "The Wedding of Fais & Nur",
-  description: "25 & 26 July 2026 — Jemputan Kahwin Fais & Nur",
+  title: "The Wedding of Nur & Fais",
+  description: "25 & 26 July 2026 — Jemputan Kahwin Nur & Fais",
   icons: {
     icon: [
       { url: "/images/fn-logo.png", sizes: "192x192", type: "image/png" },
@@ -33,10 +33,10 @@ export const metadata: Metadata = {
     ],
   },
   openGraph: {
-    title: "The Wedding of Fais & Nur",
-    description: "25 & 26 July 2026 — Jemputan Kahwin Fais & Nur",
+    title: "The Wedding of Nur & Fais",
+    description: "25 & 26 July 2026 — Jemputan Kahwin Nur & Fais",
     url: "https://shfiqupzlqzvmdjgtlas.supabase.co",
-    siteName: "Fais & Nur Wedding",
+    siteName: "Nur & Fais Wedding",
     images: [{ url: "/images/fn-logo.png", width: 1200, height: 630 }],
     type: "website",
   },

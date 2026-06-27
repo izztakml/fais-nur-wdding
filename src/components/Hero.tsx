@@ -68,7 +68,7 @@ export default function Hero() {
             </p>
           </div>
 
-          {/* Fais */}
+          {/* Nur */}
           <div
             className="transition-all duration-700 ease-out"
             style={{
@@ -78,7 +78,7 @@ export default function Hero() {
             }}
           >
             <h1 className="font-[family-name:var(--font-dancing)] text-5xl sm:text-6xl md:text-7xl lg:text-8xl text-[#f5e6d0] leading-tight">
-              Fais
+              Nur
             </h1>
           </div>
 
@@ -96,7 +96,7 @@ export default function Hero() {
             </p>
           </div>
 
-          {/* Nur */}
+          {/* Fais */}
           <div
             className="transition-all duration-700 ease-out"
             style={{
@@ -106,7 +106,7 @@ export default function Hero() {
             }}
           >
             <h1 className="font-[family-name:var(--font-dancing)] text-5xl sm:text-6xl md:text-7xl lg:text-8xl text-[#f5e6d0] leading-tight">
-              Nur
+              Fais
             </h1>
           </div>
 
