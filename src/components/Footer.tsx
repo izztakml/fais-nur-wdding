@@ -12,7 +12,7 @@ export default function Footer() {
           </p>
           <div className="w-8 h-[1px] bg-[#c9a06c]/40 mx-auto my-4" />
           <p className="text-[#d4b8a8] text-xs mb-6">
-            &copy; {new Date().getFullYear()} — Dibina dengan penuh kasih sayang
+            &copy; {new Date().getFullYear()} — Dibina dengan penuh kasih sayang oleh Najwwa Aina
           </p>
         </AnimateOnScroll>
       </div>
